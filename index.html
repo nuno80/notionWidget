@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        iframe {
+            width: 460px;
+            height: 591px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Widget</h1>
+    <form>
+        <label for="city">Enter city:</label>
+        <input type="text" id="city" name="city" placeholder="E.g., London" required>
+        <button type="submit">Update Weather</button>
+    </form>
+    <iframe id="weatherWidget" src="" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+    <div>
+        <a id="meteoblueLink" href="" target="_blank" rel="noopener">meteoblue</a>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const city = document.getElementById('city').value.trim();
+            if (city) {
+                const cityEncoded = encodeURIComponent(city);
+                const widgetSrc = `https://www.meteoblue.com/en/weather/widget/three/${cityEncoded}?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=FAHRENHEIT&windunit=MILE_PER_HOUR&layout=image`;
+                document.getElementById('weatherWidget').src = widgetSrc;
+                document.getElementById('meteoblueLink').href = `https://www.meteoblue.com/en/weather/week/${cityEncoded}?utm_source=three_widget&utm_medium=linkus&utm_content=three&utm_campaign=Weather%2BWidget`;
+            }
+        });
+
+        // Optional: Initialize with a default city
+        const defaultCity = "London";
+        document.getElementById('city').value = defaultCity;
+        document.querySelector('form').dispatchEvent(new Event('submit'));
+    </script>
+</body>
+</html>
