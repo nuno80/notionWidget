@@ -14,9 +14,9 @@
 
     <script>
         function getWeather() {
-            const apiKey = '387db697aede451f61163922880d0fb9'; // Sostituisci con la tua chiave API di OpenWeatherMap
+            const apiKey = 'YOUR_OPENWEATHER_API_KEY';
             const city = document.getElementById('cityInput').value;
-            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+            const apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=latitudine&lon=longitudine&exclude=minutely&appid=${apiKey}&units=metric`;
 
             fetch(apiUrl)
                 .then(response => response.json())
@@ -24,9 +24,13 @@
                     const weatherInfo = document.getElementById('weatherInfo');
                     weatherInfo.innerHTML = `
                         <p>City: ${data.name}</p>
-                        <p>Temperature: ${data.main.temp}°C</p>
-                        <p>Weather: ${data.weather[0].description}</p>
-                        <p>Humidity: ${data.main.humidity}%</p>
+                        <p>Temperature: ${data.current.temp}°C</p>
+                        <p>Weather: ${data.current.weather[0].description}</p>
+                        <p>Humidity: ${data.current.humidity}%</p>
+                        <h2>Forecast for the next 48 hours:</h2>
+                        <!-- Display hourly forecast here -->
+                        <h2>Forecast for the next 8 days:</h2>
+                        <!-- Display daily forecast here -->
                     `;
                 })
                 .catch(error => {
