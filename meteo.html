@@ -30,9 +30,9 @@
                     const weatherInfo = document.getElementById('weatherInfo');
                     weatherInfo.innerHTML = `
                         <p>City: ${data.name}</p>
-						<p><i class="fas fa-thermometer-half"></i> Temperature: ${data.main.temp}°C</p>					                       
+			<p><i class="fas fa-thermometer-half"></i> Temperature: ${data.main.temp}°C</p>					                       
                         <p><i class="fas fa-tint"></i> Humidity: ${data.main.humidity}%</p>
-						<p>Weather: ${data.weather[0].description} <i class="${getWeatherIcon(data.weather[0].description)}"></i></p>
+			<p>Weather: ${data.weather[0].description} <i class="${getWeatherIcon(data.weather[0].description)}"></i></p>
                     `;
                 })
                 .catch(error => {
@@ -64,7 +64,7 @@
                 'pioggia leggera': 'fas fa-cloud-showers-heavy', // Esempio: icona per "pioggia leggera"
                 'clear sky': 'fas fa-sun', // Esempio: icona per "soleggiato"
                 'overcast clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
-				'scattered clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
+		'scattered clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
                 // ... altre descrizioni e classi delle icone ...
             };
             return weatherIcons[description.toLowerCase()] || 'fas fa-question'; // Icona di default se la descrizione non è mappata
