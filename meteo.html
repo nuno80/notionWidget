@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Widget</title>
+    <!-- Includi la libreria di icone (Font Awesome o Weather Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Oppure: -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css"> -->
 </head>
 <body>
     <h1>Weather Widget</h1>
@@ -11,27 +15,59 @@
     <input type="text" id="cityInput">
     <button onclick="getWeather()">Get Weather</button>
     <div id="weatherInfo"></div>
+    <div id="forecastInfo"></div>
 
     <script>
         function getWeather() {
             const apiKey = '387db697aede451f61163922880d0fb9';
             const city = document.getElementById('cityInput').value;
-            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+            const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
 
-            fetch(apiUrl)
+            fetch(weatherUrl)
                 .then(response => response.json())
                 .then(data => {
                     const weatherInfo = document.getElementById('weatherInfo');
                     weatherInfo.innerHTML = `
                         <p>City: ${data.name}</p>
-                        <p>Temperature: ${data.main.temp}°C</p>
-                        <p>Weather: ${data.weather[0].description}</p>
-			<p>Humidity: ${data.main.humidity}%</p>
+						<p><i class="fas fa-thermometer-half"></i> Temperature: ${data.main.temp}°C</p>					                       
+                        <p><i class="fas fa-tint"></i> Humidity: ${data.main.humidity}%</p>
+						<p>Weather: ${data.weather[0].description} <i class="${getWeatherIcon(data.weather[0].description)}"></i></p>
                     `;
                 })
                 .catch(error => {
                     console.error('Error fetching weather data:', error);
                 });
+
+            fetch(forecastUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const forecastInfo = document.getElementById('forecastInfo');
+                    const forecast = data.list.slice(0, 8); // Get the next 48 hours (8 data points)
+                    forecastInfo.innerHTML = '<h2>48-Hour Forecast:</h2>';
+                    forecast.forEach(item => {
+                        const dateTime = new Date(item.dt * 1000).toLocaleString();
+                        forecastInfo.innerHTML += `
+                            <p>${dateTime}: ${item.main.temp}°C, ${item.weather[0].description} <i class="${getWeatherIcon(item.weather[0].description)}"></i></p>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching forecast data:', error);
+                });
+        }
+
+        // Funzione per ottenere l'icona del meteo in base alla descrizione
+        function getWeatherIcon(description) {
+            // Mappa le descrizioni alle classi delle icone (personalizza questa mappatura)
+            const weatherIcons = {
+                'pioggia leggera': 'fas fa-cloud-showers-heavy', // Esempio: icona per "pioggia leggera"
+                'clear sky': 'fas fa-sun', // Esempio: icona per "soleggiato"
+                'overcast clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
+				'scattered clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
+                // ... altre descrizioni e classi delle icone ...
+            };
+            return weatherIcons[description.toLowerCase()] || 'fas fa-question'; // Icona di default se la descrizione non è mappata
         }
     </script>
 </body>
