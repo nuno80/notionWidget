@@ -15,7 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #f0f0f0;
+            background: white;
             margin: 0;
         }
         .widget {
@@ -75,7 +75,7 @@
 
     <script>
         function getWeather() {
-            const apiKey = OPENWEATHER_API;
+            const apiKey = 'OPENWEATHER_API';
             const city = document.getElementById('cityInput').value;
             const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
