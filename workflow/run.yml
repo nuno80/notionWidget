@@ -1,1 +1,7 @@
+steps:
+  - name: Esempio di utilizzo secret
+    run: echo "La mia API key è ${{ secrets.API_KEY }}"
 
+env:
+  weather_api: ${{ secrets.WEATHER_API }}
+  
