@@ -3,19 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Widget</title>
+    <title>✨ Weather</title>
     <!-- Includi la libreria di icone (Font Awesome o Weather Icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Oppure: -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+        }
+        .widget {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .widget h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .widget label, .widget input, .widget button {
+            display: block;
+            width: 100%;
+            margin: 10px -10px;
+        }
+        .widget input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .widget button {
+			display: block;
+			margin: 0 auto;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .widget button:hover {
+            background: #0056b3;
+        }
+        .weather-info, .forecast-info {
+            margin-top: 20px;
+        }
+        .weather-info p, .forecast-info p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Weather Widget</h1>
-    <label for="cityInput">Enter city name:</label>
-    <input type="text" id="cityInput">
-    <button onclick="getWeather()">Get Weather</button>
-    <div id="weatherInfo"></div>
-    <div id="forecastInfo"></div>
+    <div class="widget">
+        <h1>Weather Widget</h1>
+        <label for="cityInput">Enter city name:</label>
+        <input type="text" id="cityInput" placeholder="e.g. London">
+        <button onclick="getWeather()">Get Weather</button>
+        <div class="weather-info" id="weatherInfo"></div>
+        <div class="forecast-info" id="forecastInfo"></div>
+    </div>
 
     <script>
         function getWeather() {
@@ -30,9 +86,9 @@
                     const weatherInfo = document.getElementById('weatherInfo');
                     weatherInfo.innerHTML = `
                         <p>City: ${data.name}</p>
-			<p><i class="fas fa-thermometer-half"></i> Temperature: ${data.main.temp}°C</p>					                       
+                        <p><i class="fas fa-thermometer-half"></i> Temperature: ${roundTemperature(data.main.temp)}°C</p>                      
                         <p><i class="fas fa-tint"></i> Humidity: ${data.main.humidity}%</p>
-			<p>Weather: ${data.weather[0].description} <i class="${getWeatherIcon(data.weather[0].description)}"></i></p>
+                        <p>Weather: ${data.weather[0].description} <i class="${getWeatherIcon(data.weather[0].description)}"></i></p>
                     `;
                 })
                 .catch(error => {
@@ -46,9 +102,13 @@
                     const forecast = data.list.slice(0, 8); // Get the next 48 hours (8 data points)
                     forecastInfo.innerHTML = '<h2>48-Hour Forecast:</h2>';
                     forecast.forEach(item => {
-                        const dateTime = new Date(item.dt * 1000).toLocaleString();
+                        const dateTime = new Date(item.dt * 1000);
+                        const day = dateTime.getDate();
+                        const month = dateTime.getMonth() + 1;
+                        const hours = dateTime.getHours().toString().padStart(2, '0');
+                        const minutes = dateTime.getMinutes().toString().padStart(2, '0');
                         forecastInfo.innerHTML += `
-                            <p>${dateTime}: ${item.main.temp}°C, ${item.weather[0].description} <i class="${getWeatherIcon(item.weather[0].description)}"></i></p>
+                            <p>${day}/${month}, ${hours}:${minutes} ${roundTemperature(item.main.temp)}°C, ${item.weather[0].description} <i class="${getWeatherIcon(item.weather[0].description)}"></i></p>
                         `;
                     });
                 })
@@ -61,13 +121,27 @@
         function getWeatherIcon(description) {
             // Mappa le descrizioni alle classi delle icone (personalizza questa mappatura)
             const weatherIcons = {
-                'pioggia leggera': 'fas fa-cloud-showers-heavy', // Esempio: icona per "pioggia leggera"
+                'heavy-rain': 'fas fa-cloud-showers-heavy', // Esempio: icona per "pioggia leggera"
                 'clear sky': 'fas fa-sun', // Esempio: icona per "soleggiato"
                 'overcast clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
-		'scattered clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
+                'scattered clouds': 'fas fa-cloud', // Esempio: icona per "cielo sereno"
+				'broken clouds': 'fas fa-cloud',
+				'light rain': 'fas fa-cloud-showers-heavy',
+				'moderate rain': 'fas fa-cloud-showers-heavy',
+				'rain': 'fas fa-cloud-showers-heavy',
+				'shower rain': 'fas fa-cloud-showers-heavy',
                 // ... altre descrizioni e classi delle icone ...
             };
             return weatherIcons[description.toLowerCase()] || 'fas fa-question'; // Icona di default se la descrizione non è mappata
+        }
+
+        // Funzione per arrotondare la temperatura secondo le regole specificate
+        function roundTemperature(temp) {
+            if (temp % 1 <= 0.49) {
+                return Math.floor(temp);
+            } else {
+                return Math.ceil(temp);
+            }
         }
     </script>
 </body>
