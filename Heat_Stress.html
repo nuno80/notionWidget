@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heat Stress Color Code</title>
+    <style>
+        /* Stili per le fasce di colore */
+        .yellow { background-color: yellow; }
+        .orange { background-color: orange; }
+        .amber { background-color: #FFBF00; }
+        .red { background-color: red; }
+        .green { background-color: green; }
+    </style>
+</head>
+<body>
+    <h1>Heat Stress Color Code</h1>
+    <label for="umidita">Umidità (%):</label>
+    <input type="number" id="umidita" name="umidita">
+    <label for="temperatura">Temperatura (°C):</label>
+    <input type="number" id="temperatura" name="temperatura">
+    <button onclick="determinaColore()">Determina Colore</button>
+    <div id="risultato"></div>
+
+    <script>
+        function determinaColore() {
+            var umidita = parseFloat(document.getElementById('umidita').value);
+            var temperatura = parseFloat(document.getElementById('temperatura').value);
+            var colore = 'green';  // Valore di default
+
+            // Logica degli if statement - umidità 40 - 50
+            if (umidita >= 40 && umidita < 50) {
+                if (temperatura <= 25) {
+                    colore = 'green';
+				} else if (temperatura <= 31) {
+                    colore = 'yellow';	
+                } else if (temperatura <= 35) {
+                    colore = 'orange';
+                } else if (temperatura <= 43) {
+                    colore = 'amber';
+                } else if (temperatura > 43) {
+                    colore = 'red';
+                }
+            }           
+            // Logica degli if statement - umidità 50 - 60
+            else if (umidita >= 50 && umidita < 60) {
+                if (temperatura <= 25) {
+                    colore = 'green';
+				} else if (temperatura <= 29) {
+                    colore = 'yellow';	
+                } else if (temperatura <= 33) {
+                    colore = 'orange';
+                } else if (temperatura <= 40) {
+                    colore = 'amber';
+                } else if (temperatura > 40) {
+                    colore = 'red';
+                }
+            }
+            // Logica degli if statement - umidità 60 - 70
+            else if (umidita >= 60 && umidita < 70) {
+                if (temperatura <= 25) {
+                    colore = 'green';
+				} else if (temperatura <= 29) {
+                    colore = 'yellow';	
+                } else if (temperatura <= 31) {
+                    colore = 'orange';
+                } else if (temperatura <= 38) {
+                    colore = 'amber';
+                } else if (temperatura > 38) {
+                    colore = 'red';
+                }
+            }
+            // Logica degli if statement - umidità 70 - 80
+            else if (umidita >= 70 && umidita < 80) {
+                if (temperatura <= 25) {
+                    colore = 'green';
+				} else if (temperatura <= 27) {
+                    colore = 'yellow';	
+                } else if (temperatura <= 31) {
+                    colore = 'orange';
+                } else if (temperatura <= 38) {
+                    colore = 'amber';
+                } else if (temperatura > 38) {
+                    colore = 'red';
+                }
+            }
+            // Logica degli if statement - umidità 80 - 90
+            else if (umidita >= 80 && umidita < 90) {
+                if (temperatura <= 25) {
+                    colore = 'green';
+				} else if (temperatura <= 27) {
+                    colore = 'yellow';	
+                } else if (temperatura <= 29) {
+                    colore = 'orange';
+                } else if (temperatura <= 33) {
+                    colore = 'amber';
+                } else if (temperatura > 33) {
+                    colore = 'red';
+                }
+            }
+            // Logica degli if statement - umidità 90 - 100
+            else if (umidita >= 90 && umidita <= 100) {
+                if (temperatura <= 25) {
+                    colore = 'green';
+				} else if (temperatura <= 27) {
+                    colore = 'yellow';	
+                } else if (temperatura <= 29) {
+                    colore = 'orange';
+                } else if (temperatura <= 32) {
+                    colore = 'amber';
+                } else if (temperatura > 32) {
+                    colore = 'red';
+                }
+            }
+
+            document.getElementById('risultato').className = colore;
+            document.getElementById('risultato').innerText = 'il livello di stress termico è: ' + colore;
+        }
+    </script>
+</body>
+</html>
